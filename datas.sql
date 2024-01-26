@@ -60,7 +60,7 @@ INSERT INTO families (name, orders_id) VALUES
 
     INSERT INTO races (name, family_id) VALUES
         ('chien', 1),
-        ('tigre', 4),
+        ('leopard', 4),
         ('vache', 6),
         ('gorille', 7),
         ('cheval', 8),
@@ -125,6 +125,10 @@ INSERT INTO cages (places, allee_id) VALUES
     ('grande', 11), ('petite', 11),
     ('grande', 12), ('petite', 12);
 
+INSERT INTO home (cage_id, animal_id) VALUES
+    (14, 1);
+
+
 
 --personnes
 
@@ -170,6 +174,81 @@ INSERT INTO people (name, surname, city, birth_date, role_id, cage_id) VALUES
     ('Dumas', 'Manon', 'Toulon', '10/02/1979', 2, 21),
     ('Laurin', 'Paul', 'Limoges', '01/15/1994', 2, 23);
 
+
+--ANIMAL
+
+INSERT INTO animals (name, birth_day, sex, coming_day, adoptable, country, race_id, menu_id, person_id) VALUES
+    ('Paf', '09/04/2020', 'male', '15/07/2022', true, 'France', 1, 1, 14),
+    ('Luna', '16/07/2018', 'femelle', '03/01/2020', false, 'Iran', 2, 1, 2);
+
+
+--ADOPTION
+
+-- INSERT INTO adoptions (adoption_birth, person_id, animal_id) VALUES;
+
+
+
+--SANTE
+
+INSERT INTO animals_healthBooks (healthBook_id, animal_id) VALUES
+    (1, 1),
+    (2, 2)
+
+INSERT INTO healthBooks (size, weight, vaccination_id, sicknessContracted_id) VALUES
+    (100, 15, 1, 1);
+
+INSERT TO vaccinations (date, recall, vaccin_id) VALUES
+    ('04/06/2023', '04/06/2024', 1);
+
+
+INSERT INTO vaccins (name) VALUES
+    ('rage'), ('parvorisore'),('typhus'), ('leucose'),('coccidiose');
+
+-- INSERT INTO sicknessesContracted (date, sickness_id) VALUES
+
+INSERT INTO sicknesses (name) VALUES
+    ('maladie du carre'),
+    ('hepatite'),
+    ('lyme'),
+    ('leucose'),
+    ('diabete'),
+    ('typhus'),
+    ('gastro'),
+    ('vache folle'),
+    ('psittacose'),
+    ('maladie respiratoire');
+
+
+
+
+
+
+
+
+
+
+
+SELECT 
+    animals.name,
+    races.name AS race,
+    families.name AS family,
+    orders.name AS orders,
+    people.name AS soigneur,
+    menus.name AS menu,
+    menus.quantity,
+    cages.id AS cage,
+    allees.id AS allee,
+    zones.name AS zone
+FROM animals
+JOIN races ON animals.race_id = races.id
+JOIN families ON races.family_id = families.id
+JOIN orders ON families.orders_id = orders.id
+JOIN people ON animals.person_id = people.id
+JOIN cages ON people.cage_id = cages.id
+JOIN allees ON cages.allee_id = allees.id
+JOIN zones ON allees.zone_id = zones.id
+JOIN menus ON animals.menu_id = menus.id
+WHERE animals.name = 'Paf';
 
 
 
