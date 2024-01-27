@@ -56,7 +56,8 @@ INSERT INTO families (name, orders_id) VALUES
     ('hyménoptere', 5),
     ('hyménoptere', 17),
     ('anoure', 18),
-    ('gymnophione', 18);
+    ('gymnophione', 18),
+    ('elephantide', 7);
 
     INSERT INTO races (name, family_id) VALUES
         ('chien', 1),
@@ -74,7 +75,8 @@ INSERT INTO families (name, orders_id) VALUES
         ('coccinelle', 19),
         ('fourmi', 23),
         ('rainette de white', 24),
-        ('caecilius', 25);
+        ('caecilius', 25),
+        ('elephant', 26);
 
 -- nourriture
 INSERT INTO ingredients (name) VALUES
@@ -126,7 +128,9 @@ INSERT INTO cages (places, allee_id) VALUES
     ('grande', 12), ('petite', 12);
 
 INSERT INTO home (cage_id, animal_id) VALUES
-    (14, 1);
+    (14, 1),
+    (2, 2),
+    (13, 4);
 
 
 
@@ -137,7 +141,7 @@ INSERT INTO roles (name) VALUES
     ('responsable');
 
 INSERT INTO people (name, surname, city, birth_date, role_id, cage_id) VALUES
-    ('Blanchard', 'Benoit', 'Marseille', '09/02/1975', 1, 1),
+    ('Blanchard', 'Benoit', 'Marseille', 1975-02-05, 1, 1),
     ('Martin', 'Sophie', 'Paris', '03/15/1988', 1, 2),
     ('Dupont', 'Luc', 'Lyon', '07/22/1993', 1, 3),
     ('Lefevre', 'Alice', 'Toulouse', '11/05/1980', 1, 4),
@@ -172,19 +176,23 @@ INSERT INTO people (name, surname, city, birth_date, role_id, cage_id) VALUES
     ('Guérin', 'Clara', 'Mulhouse', '12/06/1991', 2, 17),
     ('Denis', 'Alexis', 'Pau', '05/19/1984', 2, 19),
     ('Dumas', 'Manon', 'Toulon', '10/02/1979', 2, 21),
-    ('Laurin', 'Paul', 'Limoges', '01/15/1994', 2, 23);
+    ('Laurin', 'Paul', 'Limoges', '01/15/1994', 2, 23),
+    ('Katerwan', 'Alan', 'Saint-juste', '12/24/1998', NULL, NULL);
 
 
 --ANIMAL
 
 INSERT INTO animals (name, birth_day, sex, coming_day, adoptable, country, race_id, menu_id, person_id) VALUES
     ('Paf', '09/04/2020', 'male', '15/07/2022', true, 'France', 1, 1, 14),
-    ('Luna', '16/07/2018', 'femelle', '03/01/2020', false, 'Iran', 2, 1, 2);
+    ('Luna', '16/07/2018', 'femelle', '03/01/2020', false, 'Iran', 2, 1, 2),
+    ('Shiva', '15/09/2017', 'femelle', '23/05/2018', TRUE, 'France', 1, 1, 37), 
+    ('Dumbo', 1990-03-10, 'male', '2000-03-20', FALSE, 'Kenya', 17, 4, 13);
 
 
 --ADOPTION
 
--- INSERT INTO adoptions (adoption_birth, person_id, animal_id) VALUES;
+INSERT INTO adoptions (adoption_birth, person_id, animal_id) VALUES
+    ('24/06/2020', 37, 3);
 
 
 
@@ -192,21 +200,28 @@ INSERT INTO animals (name, birth_day, sex, coming_day, adoptable, country, race_
 
 INSERT INTO animals_healthBooks (healthBook_id, animal_id) VALUES
     (1, 1),
-    (2, 2)
+    (2, 2);
 
-INSERT INTO healthBooks (size, weight, vaccination_id, sicknessContracted_id) VALUES
-    (100, 15, 1, 1);
+INSERT INTO healthBooks (size, weight) VALUES
+    (100, 15),
+    (120, 35);
 
-INSERT TO vaccinations (date, recall, vaccin_id) VALUES
-    ('04/06/2023', '04/06/2024', 1);
+INSERT INTO healthBooks_vaccins (date, recall, healthBook_id, vaccin_id) VALUES
+    ('14/02/2023', '14/02/2024', 1, 1), ('14/02/2023', '14/02/2023', 1, 2),
+    ('15/04/2023', '15/04/2024', 2, 3);
+
+-- INSERT INTO vaccinations (vaccin_id) VALUES
+--     (1);
 
 
 INSERT INTO vaccins (name) VALUES
     ('rage'), ('parvorisore'),('typhus'), ('leucose'),('coccidiose');
 
--- INSERT INTO sicknessesContracted (date, sickness_id) VALUES
+INSERT INTO healthBooks_sicknesses (date, healthBook_id, sickness_id) VALUES
+    ('10/09/2022', 1, 1);
 
 INSERT INTO sicknesses (name) VALUES
+    ('rage'),
     ('maladie du carre'),
     ('hepatite'),
     ('lyme'),
@@ -223,32 +238,57 @@ INSERT INTO sicknesses (name) VALUES
 
 
 
+-- 1 nom des animaux :
+SELECT
+animals.name
+FROM animals;
 
+-- 2 fonctionalités disponible :
+SELECT
+roles.name
+FROM roles;
 
-
-
-
-SELECT 
-    animals.name,
-    races.name AS race,
-    families.name AS family,
-    orders.name AS orders,
-    people.name AS soigneur,
-    menus.name AS menu,
-    menus.quantity,
-    cages.id AS cage,
-    allees.id AS allee,
-    zones.name AS zone
+-- 3 nom des lépoard :
+SELECT
+animals.name
 FROM animals
 JOIN races ON animals.race_id = races.id
-JOIN families ON races.family_id = families.id
-JOIN orders ON families.orders_id = orders.id
-JOIN people ON animals.person_id = people.id
-JOIN cages ON people.cage_id = cages.id
-JOIN allees ON cages.allee_id = allees.id
-JOIN zones ON allees.zone_id = zones.id
-JOIN menus ON animals.menu_id = menus.id
-WHERE animals.name = 'Paf';
+WHERE races.name = 'leopard';
+
+-- 4 maladies contractés au moins une fois :
+SELECT DISTINCT
+sicknesses.name
+FROM healthBooks_sicknesses
+JOIN sicknesses ON healthBooks_sicknesses.sickness_id = sicknesses.id;
+
+-- 5 nom et numeros de cage des animaus males orginaires du Kenya et date naissance < 1992
+SELECT animals.name, cage_id
+FROM home
+JOIN animals ON home.animal_id = animals.id
+WHERE animals.sex = 'male' AND animals.country = 'Kenya' AND birth_day < 1992-01-01;
+
+
+-- SELECT 
+--     animals.name,
+--     races.name AS race,
+--     families.name AS family,
+--     orders.name AS orders,
+--     people.name AS soigneur,
+--     menus.name AS menu,
+--     menus.quantity,
+--     cages.id AS cage,
+--     allees.id AS allee,
+--     zones.name AS zone
+-- FROM animals
+-- JOIN races ON animals.race_id = races.id
+-- JOIN families ON races.family_id = families.id
+-- JOIN orders ON families.orders_id = orders.id
+-- JOIN people ON animals.person_id = people.id
+-- JOIN cages ON people.cage_id = cages.id
+-- JOIN allees ON cages.allee_id = allees.id
+-- JOIN zones ON allees.zone_id = zones.id
+-- JOIN menus ON animals.menu_id = menus.id
+-- WHERE animals.name = 'Paf';
 
 
 

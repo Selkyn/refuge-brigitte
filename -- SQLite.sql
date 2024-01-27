@@ -1,8 +1,8 @@
 -- SQLite
 PRAGMA foreign_keys = ON;
 
-
-
+DROP TABLE IF EXISTS healthBooks_sicknesses;
+DROP TABLE IF EXISTS healthBooks_vaccins;
 DROP TABLE IF EXISTS adoptions;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS people;
@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS cages;
 DROP TABLE IF EXISTS home;
 DROP TABLE IF EXISTS animals_healthBooks;
 DROP TABLE IF EXISTS healthBooks;
-DROP TABLE IF EXISTS vaccinations;
 DROP TABLE IF EXISTS vaccins;
 DROP TABLE IF EXISTS sicknesses;
 DROP TABLE IF EXISTS sicknessesContracted;
@@ -115,20 +114,24 @@ CREATE TABLE animals_healthBooks (
 CREATE TABLE healthBooks (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     size VARCHAR(50),
-    weight VARCHAR(50),
-    vaccination_id INTEGER NOT NULL,
-    sicknessContracted_id INTEGER NOT NULL,
-    FOREIGN KEY (vaccination_id) REFERENCES vaccinations (id) ON DELETE CASCADE,
-    FOREIGN KEY (sicknessContracted_id) REFERENCES sicknessesContracted (id) ON DELETE CASCADE
+    weight VARCHAR(50)
 );
 
-CREATE TABLE vaccinations (
+CREATE TABLE healthBooks_vaccins (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     date DATETIME,
     recall DATETIME,
     vaccin_id INTEGER NOT NULL,
-    FOREIGN KEY (vaccin_id) REFERENCES vaccins (id) ON DELETE CASCADE
-);
+    healthBook_id INTEGER NOT NULL,
+    FOREIGN KEY (vaccin_id) REFERENCES vaccins (id) ON DELETE CASCADE,
+    FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE
+);  
+
+-- CREATE TABLE vaccinations (
+--     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+--     vaccin_id INTEGER NOT NULL,
+--     FOREIGN KEY (vaccin_id) REFERENCES vaccins (id) ON DELETE CASCADE
+-- );
 
 CREATE TABLE vaccins (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -140,10 +143,12 @@ CREATE TABLE sicknesses (
     name VARCHAR(50)
 );
 
-CREATE TABLE sicknessesContracted (
+CREATE TABLE healthBooks_sicknesses (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     date DATETIME,
+    healthBook_id INTEGER NOT NULL,
     sickness_id INTEGER NOT NULL,
+    FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE,
     FOREIGN KEY (sickness_id) REFERENCES sicknesses (id) ON DELETE CASCADE
 );
 
@@ -191,7 +196,7 @@ CREATE TABLE people (
     surname VARCHAR (50),
     city VARCHAR (50),
     birth_date DATETIME,
-    role_id INTEGER NOT NULL,
+    role_id INTEGER,
     cage_id INTEGER,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE,
     FOREIGN KEY (cage_id) REFERENCES cages (id) ON DELETE CASCADE
