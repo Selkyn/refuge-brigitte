@@ -30,9 +30,9 @@ DROP TABLE IF EXISTS animals;
 CREATE TABLE animals (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR (50) NOT NULL,
-    birth_day DATETIME,
+    birth_day DATE,
     sex VARCHAR (20),
-    coming_day DATETIME NOT NULL,
+    coming_day DATE NOT NULL,
     adoptable BOOLEAN,
     country VARCHAR(50),
     race_id INTEGER NOT NULL,
@@ -119,8 +119,8 @@ CREATE TABLE healthBooks (
 
 CREATE TABLE healthBooks_vaccins (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    date DATETIME,
-    recall DATETIME,
+    date DATE,
+    recall DATE,
     vaccin_id INTEGER NOT NULL,
     healthBook_id INTEGER NOT NULL,
     FOREIGN KEY (vaccin_id) REFERENCES vaccins (id) ON DELETE CASCADE,
@@ -145,7 +145,7 @@ CREATE TABLE sicknesses (
 
 CREATE TABLE healthBooks_sicknesses (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    date DATETIME,
+    date DATE,
     healthBook_id INTEGER NOT NULL,
     sickness_id INTEGER NOT NULL,
     FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE,
@@ -195,7 +195,7 @@ CREATE TABLE people (
     name VARCHAR (50),
     surname VARCHAR (50),
     city VARCHAR (50),
-    birth_date DATETIME,
+    birth_date DATE,
     role_id INTEGER,
     cage_id INTEGER,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE,
@@ -206,7 +206,7 @@ CREATE TABLE people (
 --ADOPTION
 CREATE TABLE adoptions (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    adoption_birth DATETIME,
+    adoption_birth DATE,
     person_id INTEGER NOT NULL,
     animal_id INTEGER NOT NULL,
     FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE,
