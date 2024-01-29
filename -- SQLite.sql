@@ -1,6 +1,9 @@
 -- SQLite
 PRAGMA foreign_keys = ON;
 
+
+DROP TABLE IF EXISTS ascendance;
+DROP TABLE IF EXISTS descendance;
 DROP TABLE IF EXISTS healthBooks_sicknesses;
 DROP TABLE IF EXISTS healthBooks_vaccins;
 DROP TABLE IF EXISTS adoptions;
@@ -38,9 +41,12 @@ CREATE TABLE animals (
     race_id INTEGER NOT NULL,
     menu_id INTEGER NOT NULL,
     person_id INTEGER NOT NULL,
+    ascendance_id INTEGER,
+    descendant_number,
     FOREIGN KEY (race_id) REFERENCES races (id) ON DELETE CASCADE,
     FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE,
-    FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE
+    FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE,
+    FOREIGN KEY (ascendance_id) REFERENCES ascendance (id) ON DELETE CASCADE
 );
 
 
@@ -212,6 +218,27 @@ CREATE TABLE adoptions (
     FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE,
     FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE CASCADE
 );
+
+-- parenté
+CREATE TABLE ascendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    father_id INTEGER,
+    mother_id INTEGER,
+    child_id INTGER,
+    FOREIGN KEY (father_id) REFERENCES animals (id) ON DELETE CASCADE,
+    FOREIGN KEY (mother_id) REFERENCES animals (id) ON DELETE CASCADE,
+    FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
+);
+
+CREATE TABLE descendance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    parents_id INTEGER,
+    grand_parents_id INTEGER,
+    child_id INTEGER,
+    FOREIGN KEY (parents_id) REFERENCES ascendance (id) ON DELETE CASCADE,
+    FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
+);
+
 
 
 

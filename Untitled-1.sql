@@ -1,0 +1,36 @@
+-- SELECT * FROM animals
+-- JOIN  (
+--     SELECT ascendance.father_id
+--     FROM animals
+--     JOIN ascendance ON animals.ascendance_id = ascendance.id
+--     WHERE animals.name = 'Pumba' ;
+-- ) ON animal_id = father_id
+-- ;
+-- SELECT *,  (
+--     SELECT animals.name FROM animals
+-- ) AS name_father
+-- FROM ascendance;
+
+-- SELECT
+--     a.name AS nom_animal,
+--     m.name AS nom_mere,
+--     p.name AS nom_pere
+-- FROM animals a
+-- JOIN ascendance asc ON a.ascendance_id = asc.id
+-- LEFT JOIN animals m ON asc.mother_id = m.id
+-- LEFT JOIN animals p ON asc.father_id = p.id
+-- WHERE animals.name = 'Pumba';
+
+-- SELECT
+--     Pumba.name AS Animal,
+--     Father.name AS Father,
+--     Mother.name AS Mother
+-- FROM animals AS Pumba
+-- JOIN
+--     ascendance ON Pumba.ascendance_id = ascendance.id
+-- LEFT JOIN
+--     animals AS Father ON ascendance.father_id = Father.id
+-- LEFT JOIN
+--     animals AS Mother ON ascendance.mother_id = Mother.id
+-- WHERE
+--     Pumba.name = 'Pumba';
