@@ -79,7 +79,8 @@ INSERT INTO families (name, orders_id) VALUES
         ('caecilius', 25),
         ('elephant', 26),
         ('sanglier', 27),
-        ('tigre', 4);
+        ('tigre', 4),
+        ('singe', 7);
 
 -- nourriture
 INSERT INTO ingredients (name) VALUES
@@ -135,7 +136,10 @@ INSERT INTO home (cage_id, animal_id) VALUES
     (2, 2),
     (13, 4),
     (4, 5),
-    (2, 6);
+    (2, 6),
+    (20, 7),
+    (4, 8),
+    (4, 9);
 
 
 
@@ -192,8 +196,11 @@ INSERT INTO animals (name, birth_day, sex, coming_day, adoptable, country, race_
     ('Luna', '2018-06-22', 'femelle', '2020-01-03', false, 'Iran', 2, 1, 2, NULL, NULL),
     ('Shiva', '2017-12-03', 'femelle', '2018-05-23', true, 'France', 1, 1, 37, NULL, 5),
     ('Dumbo', '1990-03-10', 'male', '2000-03-20', false, 'Kenya', 17, 4, 13, NULL, NULL),
-    ('Pumba', '2015-06-06', 'male', '2015-07-07', false, 'France', 27, 3, 3, 1, 0),
-    ('Sherkhan', '2014-09-09', 'femelle', '2016-08-09', false, 'Inde', 28, 2, 2, NULL, NULL); 
+    ('Pumba', '2015-06-06', 'male', '2015-07-07', false, 'France', 18, 3, 3, 1, 0),
+    ('Charly', '2014-09-09', 'femelle', '2016-08-09', false, 'Inde', 19, 2, 2, NULL, NULL),
+    ('Sickman', '2024-01-30', 'male', '2024-01-30', true, 'France', 9, 5, 20, NULL, NULL),
+    ('Hector', '2019-05-23', 'femelle', '2020-01-25', true, 'Espagne', 20, 3, 8, NULL, NULL),
+    ('Abou', '2012-05-24', 'male', '2013-06-21', false, 'Afrique', 20, 3, 8, NULL, NULL); 
 
 
 --ADOPTION
@@ -211,7 +218,10 @@ INSERT INTO animals_healthBooks (healthBook_id, animal_id) VALUES
     (3, 3),
     (4, 4),
     (5, 5),
-    (6, 6);
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9);
 
 INSERT INTO healthBooks (size, weight) VALUES
     (100, 15),
@@ -219,7 +229,10 @@ INSERT INTO healthBooks (size, weight) VALUES
     (60, 10),
     (5500, 5000),
     (120, 500),
-    (150, 200);
+    (150, 200),
+    (10, 1),
+    (100, 25),
+    (110, 26);
 
 INSERT INTO healthBooks_vaccins (date, recall, healthBook_id, vaccin_id) VALUES
     ('2023-02-14', '2024-02-14', 1, 1),
@@ -228,7 +241,9 @@ INSERT INTO healthBooks_vaccins (date, recall, healthBook_id, vaccin_id) VALUES
     ('2018-05-16', '2019-05-16', 3, 1),
     ('2023-10-15', '2024-10-15', 4, 5),
     ('2023-10-15', '2024-10-15', 5, 4),
-    ('2023-02-16', '2024-02-16', 6, 3);
+    ('2023-02-16', '2024-02-16', 6, 3),
+    ('2023-10-15', '2024-10-15', 8, 3),
+    ('2023-10-15', '2024-10-15', 9, 3);
 
 -- INSERT INTO vaccinations (vaccin_id) VALUES
 --     (1);
@@ -238,8 +253,10 @@ INSERT INTO vaccins (name) VALUES
     ('rage'), ('parvorisore'),('typhus'), ('leucose'),('coccidiose');
 
 INSERT INTO healthBooks_sicknesses (date, healthBook_id, sickness_id) VALUES
-    ('10/09/2022', 1, 1),
-    ('13/10/2021', 4, 12);
+    ('10-09-2022', 1, 1),
+    ('13-10-2021', 4, 12),
+    ('2024-01-30', 7, 1), ('2024-01-30', 7, 2), ('2024-01-30', 7, 3), ('2024-01-30', 7, 4),('2024-01-30', 7, 5), ('2024-01-30', 7, 6), ('2024-01-30', 7, 7), ('2024-01-30', 7, 8),('2024-01-30', 7, 9), ('2024-01-30', 7, 10), ('2024-01-30', 7, 11), ('2024-01-30', 7, 12);
+
 
 INSERT INTO sicknesses (name) VALUES
     ('rage'),
