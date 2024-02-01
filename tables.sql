@@ -1,7 +1,9 @@
 -- SQLite
 PRAGMA foreign_keys = ON;
 
-
+DROP TABLE IF EXISTS cities;
+DROP TABLE IF EXISTS continents;
+DROP TABLE IF EXISTS countries;
 DROP TABLE IF EXISTS ascendance;
 DROP TABLE IF EXISTS descendance;
 DROP TABLE IF EXISTS healthBooks_sicknesses;
@@ -37,12 +39,13 @@ CREATE TABLE animals (
     sex VARCHAR (20),
     coming_day DATE NOT NULL,
     adoptable BOOLEAN,
-    country VARCHAR(50),
+    country_id INTEGER,
     race_id INTEGER NOT NULL,
     menu_id INTEGER NOT NULL,
     person_id INTEGER NOT NULL,
     ascendance_id INTEGER,
     descendant_number,
+    FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE CASCADE,
     FOREIGN KEY (race_id) REFERENCES races (id) ON DELETE CASCADE,
     FOREIGN KEY (menu_id) REFERENCES menus (id) ON DELETE CASCADE,
     FOREIGN KEY (person_id) REFERENCES people (id) ON DELETE CASCADE,
@@ -109,18 +112,20 @@ CREATE TABLE ingredients_menus (
 
 -- SANTE
 
-CREATE TABLE animals_healthBooks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    healthBook_id INTEGER NOT NULL,
-    animal_id INTEGER NOT NULL,
-    FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE,
-    FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE CASCADE
-);
+-- CREATE TABLE animals_healthBooks (
+--     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+--     healthBook_id INTEGER NOT NULL,
+--     animal_id INTEGER NOT NULL,
+--     FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE,
+--     FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE CASCADE
+-- );
 
 CREATE TABLE healthBooks (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    animal_id INTEGER,
     size VARCHAR(50),
-    weight VARCHAR(50)
+    weight VARCHAR(50),
+    FOREIGN KEY (animal_id) REFERENCES animals (id) ON DELETE CASCADE
 );
 
 CREATE TABLE healthBooks_vaccins (
@@ -202,10 +207,11 @@ CREATE TABLE people (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR (50),
     surname VARCHAR (50),
-    city VARCHAR (50),
+    city_id INTEGER,
     birth_date DATE,
     role_id INTEGER,
     cage_id INTEGER,
+    FOREIGN KEY (city_id) REFERENCES cities (id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE,
     FOREIGN KEY (cage_id) REFERENCES cages (id) ON DELETE CASCADE
 );
@@ -226,10 +232,10 @@ CREATE TABLE ascendance (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     father_id INTEGER,
     mother_id INTEGER,
-    child_id INTGER,
+    -- child_id INTGER,
     FOREIGN KEY (father_id) REFERENCES animals (id) ON DELETE CASCADE,
     FOREIGN KEY (mother_id) REFERENCES animals (id) ON DELETE CASCADE,
-    FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
+    -- FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
 );
 
 CREATE TABLE descendance (
@@ -241,7 +247,23 @@ CREATE TABLE descendance (
     FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
 );
 
+CREATE TABLE continents (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(50)
+);
 
+CREATE TABLE countries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(50),
+    continent_id INTEGER,
+    FOREIGN KEY (continent_id) REFERENCES continents (id) ON DELETE CASCADE
+);
 
+CREATE TABLE cities (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(50),
+    country_id INTEGER,
+    FOREIGN KEY (country_id) REFERENCES countries (id) ON DELETE CASCADE
+);
 
 source datas.sql;
