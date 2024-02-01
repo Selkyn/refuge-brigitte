@@ -10,7 +10,7 @@ FROM roles;
 
 -- 3 nom des lépoard :
 SELECT
-animals.name
+animals.name, races.name
 FROM animals
 JOIN races ON animals.race_id = races.id
 WHERE races.name = 'leopard';
@@ -21,11 +21,11 @@ sicknesses.name
 FROM healthBooks_sicknesses
 JOIN sicknesses ON healthBooks_sicknesses.sickness_id = sicknesses.id;
 
--- 5 nom et numeros de cage des animaus males orginaires du Kenya et date naissance < 1992
+-- 5 nom et numeros de cage des animaux males orginaires du Kenya et date naissance < 1992
 SELECT animals.name, cage_id
 FROM home
 JOIN animals ON home.animal_id = animals.id
-WHERE animals.sex = 'male' AND animals.country = 'Kenya' AND birth_day < '1992-01-01';
+WHERE animals.sex = 'male' AND animals.country = 'Kenya' AND animals.birth_day < '1992-01-01';
 
 --6
 SELECT surname || ' vit à ' || city AS qui_vit_ou
@@ -56,14 +56,19 @@ JOIN cages ON people.cage_id = cages.id
 WHERE people.city = 'Calvi';
 
 --10 Le nom des animaux ainsi que des employés qui en sont soit les soigneurs soit les responsables ( a finir )
-SELECT animals.name, people.name, roles.name, allees.id
+SELECT 
+    animals.name, 
+    people.name AS soigneur, 
+    people_allees.name AS responsable
 -- respondable.name AS responsable 
 FROM animals
 JOIN people ON animals.person_id = people.id
+
 JOIN roles ON people.role_id = roles.id
 JOIN cages ON people.cage_id = cages.id
 JOIN allees ON cages.allee_id = allees.id
--- JOIN people AS responsable ON people
+JOIN 
+    people AS people_allees ON allees.responsable_id = people_allees.id
 ;
 
 --11 Le nom des soigneurs gardant tous les animaux.
@@ -96,7 +101,6 @@ WHERE animals.country = 'Kenya' AND sicknesses.name = 'grippe'
 
 
 -- 14 Les numéros et fonctionnalités des cages qui sont inoccupées
-
 SELECT c.id AS num_cage, c.places, z.name AS zone_name
 FROM cages c
 JOIN allees a ON c.allee_id = a.id
@@ -113,13 +117,13 @@ JOIN sicknesses ON healthBooks_sicknesses.sickness_id = sicknesses.id
 WHERE animals.sex = 'male';
 
 --16 cages qui contiennent au moins deux animaux de types différents
-SELECT cages.id AS num_cage
-FROM home
-JOIN cages ON home.cage_id = cages.id
+SELECT cages.id AS num_cage, cages.places AS type
+FROM cages
+JOIN home ON home.cage_id = cages.id
 JOIN animals ON home.animal_id = animals.id
 JOIN races ON animals.race_id = races.id
 GROUP BY cages.id
-HAVING COUNT(races.id) > 1
+HAVING COUNT(DISTINCT races.id) > 1
 ;
 
 
@@ -140,14 +144,6 @@ FROM animals
 
 
 --19 Le nom, le type et l’année de naissance des animaux qui ont contracté toutes les maladies
--- SELECT animals.name, animals.birth_day, sicknesses.name
--- FROM animals_healthBooks
--- JOIN animals ON animals_healthBooks.animal_id = animals.id
--- JOIN healthBooks ON animals_healthBooks.healthBook_id = healthBooks.id
--- JOIN healthBooks_sicknesses ON healthBooks_sicknesses.healthBook_id = healthBooks.id 
--- JOIN sicknesses ON healthBooks_sicknesses.sickness_id = sicknesses.id 
--- ;
-
 SELECT animals.name, animals.birth_day, COUNT(DISTINCT sicknesses.id) AS num_sicknesses
 FROM animals_healthBooks
 JOIN animals ON animals_healthBooks.animal_id = animals.id
@@ -167,6 +163,15 @@ WHERE home.cage_id = 2
 ;
 
 --21
+SELECT people.name, people.city, cage_id AS num_cage
+FROM people
+JOIN roles ON people.role_id = roles.id
+JOIN cages ON people.cage_id = cages.id
+JOIN races ON animals.race_id = races.id
+JOIN animals ON animals.person_id = people.id
+GROUP BY num_cage, people.name
+HAVING COUNT(DISTINCT races.name) > 1
+;
 
 
 --22 nom et age de tous les animaux
@@ -189,7 +194,7 @@ WHERE animals.name = 'Hector';
 SELECT animals.name, animals.country, CAST ((julianday('now') - julianday(animals.birth_day)) /365.25 AS INTEGER) AS age
 FROM animals
 JOIN races ON animals.race_id = races.id
-WHERE age > 10 AND races.name = 'singe';
+WHERE age > 10 AND races.name = 'singe' AND animals.country = 'Afrique';
 
 --26 Donner les noms des singes ainsi que des animaux de plus de 8 ans.
 SELECT animals.name, CAST ((julianday('now') - julianday(animals.birth_day)) /365.25 AS INTEGER) AS age
@@ -198,11 +203,11 @@ JOIN races ON animals.race_id = races.id
 WHERE age > 8 OR races.name = 'singe';
 
 --27 Donner les races des animaux dont le numéro de menu est 1 et l'âge est supérieur à 10
-SELECT races.name 
+SELECT races.name, CAST ((julianday('now') - julianday(animals.birth_day)) /365.25 AS INTEGER) AS age
 FROM animals
 JOIN races ON animals.race_id = races.id
 JOIN menus ON animals.menu_id = menus.id
-WHERE menus.id = 1;
+WHERE menus.id = 1 AND age > 10;
 
 --28 Donner les menus plus 2 fois moins riches en viande qu'en légume?
 
@@ -211,18 +216,56 @@ WHERE menus.id = 1;
 SELECT animals.name, animals.country
 FROM animals
 JOIN races ON animals.race_id = races.id
-WHERE races.name = 'chien' OR races.name = 'Chat';
+WHERE races.name = 'chien' OR races.name = 'chat';
 
 --30 Numéro de menu et quantité de viande pour les animaux qui ont une attitude amicale
-SELECT animals.name, menus.id AS num_menu, menus.quantity AS qty viande
+SELECT animals.name, menus.id AS num_menu,CASE WHEN races.name = 'elephant' THEN 0 ELSE COALESCE(menus.quantity, 0) END AS qty_viande, CASE WHEN races.name = 'elephant' THEN 'viande' ELSE COALESCE(ingredients.name, 0) END AS ingredient
 FROM animals
 JOIN races ON animals.race_id = races.id
 JOIN menus ON animals.menu_id = menus.id
+JOIN ingredients_menus ON ingredients_menus.menu_id = menus.id
+JOIN ingredients ON ingredients_menus.ingredient_id = ingredients.id
+WHERE races.name = 'chien' OR races.name = 'chat' OR races.name = 'elephant'
+;
+
+--31 Donner les noms des animaux qui sont grands parents
+
+
+
+--32 Quantité de viande totale pour tous les menus
+SELECT ingredients.name, SUM(menus.quantity) AS total_qty
+FROM ingredients_menus
+JOIN ingredients ON ingredients_menus.ingredient_id = ingredients.id
+JOIN menus ON ingredients_menus.menu_id = menus.id
+WHERE ingredients.name = 'viande';
+
+--33 Nombre d'enfants pour chaque numéro d'animal
+SELECT animals.id, animals.name, animals.descendant_number
+FROM animals
+WHERE descendant_number IS NOT NULL;
+
+--34 Lister les animaux qui dont on connaît les deux parents
+SELECT 
+    animals.name AS animal_name,
+    father.name AS father_name,
+    mother.name AS mother_name
+FROM 
+    animals
+JOIN 
+    ascendance AS father_ascendance ON animals.ascendance_id = father_ascendance.id
+JOIN 
+    animals AS father ON father_ascendance.father_id = father.id
+JOIN 
+    ascendance AS mother_ascendance ON animals.ascendance_id = mother_ascendance.id
+JOIN 
+    animals AS mother ON mother_ascendance.mother_id = mother.id;
 
 
 
 
 
+SELECT *
+FROM animals;
 
 
 

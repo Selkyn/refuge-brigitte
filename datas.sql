@@ -114,8 +114,8 @@ INSERT INTO zones (name) VALUES
     ('voliere'),
     ('insecte');
 
-INSERT INTO allees (zone_id) VALUES
-    (1), (1), (2), (2), (3), (3), (4), (4), (5), (5), (6), (6);
+INSERT INTO allees (zone_id, responsable_id) VALUES
+    (1, 25), (1, 26), (2, 27), (2, 28), (3, 29), (3, 30), (4, 31), (4, 32), (5, 33), (5, 34), (6, 35), (6, 36);
 
 INSERT INTO cages (places, allee_id) VALUES
     ('grande', 1), ('petite', 1),
@@ -135,11 +135,18 @@ INSERT INTO home (cage_id, animal_id) VALUES
     (14, 1),
     (2, 2),
     (13, 4),
-    (4, 5),
+    (3, 5),
     (2, 6),
-    (20, 7),
-    (4, 8),
-    (4, 9);
+    (21, 7),
+    (1, 8),
+    (1, 9),
+    (20, 10),
+    (20, 11),
+    (20, 12),
+    (20, 13),
+    (20, 14),
+    (20, 15);
+
 
 
 
@@ -174,18 +181,18 @@ INSERT INTO people (name, surname, city, birth_date, role_id, cage_id) VALUES
 ('Léger', 'Isabelle', 'Limoges', '1977-06-24', 1, 22),
 ('Mallet', 'Antoine', 'Toulon', '1992-11-09', 1, 23),
 ('Rodriguez', 'Amandine', 'Aix-en-Provence', '1986-05-14', 1, 24),
-('Deschamps', 'Élodie', 'Rouen', '1985-08-21', 2, 1),
-('Bertrand', 'Hugo', 'Nancy', '1990-02-03', 2, 3),
-('Lecomte', 'Emma', 'Caen', '1983-06-17', 2, 5),
-('Fischer', 'Maxime', 'Metz', '1978-11-30', 2, 7),
-('Noël', 'Lucie', 'Brest', '1995-04-12', 2, 9),
-('Coulon', 'Romain', 'Amiens', '1981-09-25', 2, 11),
-('Marchand', 'Léa', 'Perpignan', '1989-03-08', 2, 13),
-('Chevalier', 'Gabriel', 'Orléans', '1986-07-23', 2, 15),
-('Guérin', 'Clara', 'Mulhouse', '1991-12-06', 2, 17),
-('Denis', 'Alexis', 'Pau', '1984-05-19', 2, 19),
-('Dumas', 'Manon', 'Toulon', '1979-10-02', 2, 21),
-('Laurin', 'Paul', 'Limoges', '1994-01-15', 2, 23),
+('Deschamps', 'Élodie', 'Rouen', '1985-08-21', 2, NULL),
+('Bertrand', 'Hugo', 'Nancy', '1990-02-03', 2, NULL),
+('Lecomte', 'Emma', 'Caen', '1983-06-17', 2, NULL),
+('Fischer', 'Maxime', 'Metz', '1978-11-30', 2, NULL),
+('Noël', 'Lucie', 'Brest', '1995-04-12', 2, NULL),
+('Coulon', 'Romain', 'Amiens', '1981-09-25', 2, NULL),
+('Marchand', 'Léa', 'Perpignan', '1989-03-08', 2, NULL),
+('Chevalier', 'Gabriel', 'Orléans', '1986-07-23', 2, NULL),
+('Guérin', 'Clara', 'Mulhouse', '1991-12-06', 2, NULL),
+('Denis', 'Alexis', 'Pau', '1984-05-19', 2, NULL),
+('Dumas', 'Manon', 'Toulon', '1979-10-02', 2, NULL),
+('Laurin', 'Paul', 'Limoges', '1994-01-15', 2, NULL),
 ('Katerwan', 'Alan', 'Saint-juste', '1998-12-24', NULL, NULL);
 
 
@@ -194,13 +201,19 @@ INSERT INTO people (name, surname, city, birth_date, role_id, cage_id) VALUES
 INSERT INTO animals (name, birth_day, sex, coming_day, adoptable, country, race_id, menu_id, person_id, ascendance_id, descendant_number) VALUES
     ('Paf', '2020-04-09', 'male', '2022-07-15', true, 'France', 1, 1, 14, NULL, NULL),
     ('Luna', '2018-06-22', 'femelle', '2020-01-03', false, 'Iran', 2, 1, 2, NULL, NULL),
-    ('Shiva', '2017-12-03', 'femelle', '2018-05-23', true, 'France', 1, 1, 37, NULL, 5),
+    ('Shiva', '2017-12-03', 'femelle', '2018-05-23', true, 'France', 1, 1, 37, NULL, NULL),
     ('Dumbo', '1990-03-10', 'male', '2000-03-20', false, 'Kenya', 17, 4, 13, NULL, NULL),
-    ('Pumba', '2015-06-06', 'male', '2015-07-07', false, 'France', 18, 3, 3, 1, 0),
+    ('Pumba', '2015-06-06', 'male', '2015-07-07', false, 'France', 18, 3, 3, NULL, NULL),
     ('Charly', '2014-09-09', 'femelle', '2016-08-09', false, 'Inde', 19, 2, 2, NULL, NULL),
-    ('Sickman', '2024-01-30', 'male', '2024-01-30', true, 'France', 9, 5, 20, NULL, NULL),
-    ('Hector', '2019-05-23', 'femelle', '2020-01-25', true, 'Espagne', 20, 3, 8, NULL, NULL),
-    ('Abou', '2012-05-24', 'male', '2013-06-21', false, 'Afrique', 20, 3, 8, NULL, NULL); 
+    ('Sickman', '2024-01-30', 'male', '2024-01-30', true, 'France', 9, 5, 21, NULL, NULL),
+    ('Hector', '2019-05-23', 'femelle', '2020-01-25', true, 'Espagne', 20, 3, 1, NULL, NULL),
+    ('Abou', '2012-05-24', 'male', '2013-06-21', false, 'Afrique', 20, 3, 1, NULL, NULL), 
+    ('Donald', '2018-11-20', 'male', '2019-07-20', false, 'France', 9, 5, 20, NULL, 2),
+    ('Daisy', '2018-10-11', 'femelle', '2019-07-20', false, 'France', 9, 5, 20, NULL, 2),
+    ('Riri', '2020-04-01', 'male', '2020-04-01', false, 'France', 9, 5, 20, 1, NULL),
+    ('Fifi', '2020-04-01', 'femelle', '2020-04-01', false, 'France', 9, 5, 20, 1, 1),
+    ('Bofils', '2019-05-15', 'male', '2019-10-15', false, 'France', 9, 5, 20, NULL, 1),
+    ('Fibo', '2021-09-13', 'male', '2021-09-13', false, 'France', 9, 5, 20, 2, NULL);
 
 
 --ADOPTION
@@ -221,7 +234,13 @@ INSERT INTO animals_healthBooks (healthBook_id, animal_id) VALUES
     (6, 6),
     (7, 7),
     (8, 8),
-    (9, 9);
+    (9, 9),
+    (10, 10),
+    (11, 11),
+    (12, 12),
+    (13, 13),
+    (14, 14),
+    (15, 15);
 
 INSERT INTO healthBooks (size, weight) VALUES
     (100, 15),
@@ -232,7 +251,14 @@ INSERT INTO healthBooks (size, weight) VALUES
     (150, 200),
     (10, 1),
     (100, 25),
-    (110, 26);
+    (110, 26),
+    (40, 3),
+    (45, 4),
+    (43, 3),
+    (41, 3),
+    (42, 4),
+    (40, 3)
+    ;
 
 INSERT INTO healthBooks_vaccins (date, recall, healthBook_id, vaccin_id) VALUES
     ('2023-02-14', '2024-02-14', 1, 1),
@@ -245,8 +271,6 @@ INSERT INTO healthBooks_vaccins (date, recall, healthBook_id, vaccin_id) VALUES
     ('2023-10-15', '2024-10-15', 8, 3),
     ('2023-10-15', '2024-10-15', 9, 3);
 
--- INSERT INTO vaccinations (vaccin_id) VALUES
---     (1);
 
 
 INSERT INTO vaccins (name) VALUES
@@ -274,23 +298,14 @@ INSERT INTO sicknesses (name) VALUES
 
 --parenté
 INSERT INTO ascendance(father_id, mother_id) VALUES
-    (3, 2) 
-;
+    (10, 11),
+    (14, 13);
 
 INSERT INTO descendance (parents_id, child_id) VALUES
-    (1, 5);
+    (1, 12), (1, 13),
+    (2, 15);
 
--- SELECT * FROM animals
--- WHERE animals.name = (
---     SELECT ascendance.father_id
---     FROM animals
---     JOIN ascendance ON animals.ascendance_id = ascendance.id
---     WHERE animals.name = 'Pumba' 
--- )
--- ;
 
--- SELECT animals.name FROM animals
--- WHERE animal_id IN (SELECT ascendance_id
 
 
 

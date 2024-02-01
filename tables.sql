@@ -170,7 +170,9 @@ CREATE TABLE allees (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     number VARCHAR (50),
     zone_id INTEGER NOT NULL,
-    FOREIGN KEY (zone_id) REFERENCES zones (id) ON DELETE CASCADE
+    responsable_id INTEGER,
+    FOREIGN KEY (zone_id) REFERENCES zones (id) ON DELETE CASCADE,
+    FOREIGN KEY (responsable_id) REFERENCES people (id) ON DELETE CASCADE
 );
 
 CREATE TABLE cages (
@@ -233,7 +235,7 @@ CREATE TABLE ascendance (
 CREATE TABLE descendance (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     parents_id INTEGER,
-    grand_parents_id INTEGER,
+    -- grand_parents_id INTEGER,
     child_id INTEGER,
     FOREIGN KEY (parents_id) REFERENCES ascendance (id) ON DELETE CASCADE,
     FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
