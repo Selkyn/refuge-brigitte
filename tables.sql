@@ -138,11 +138,6 @@ CREATE TABLE healthBooks_vaccins (
     FOREIGN KEY (healthBook_id) REFERENCES healthBooks (id) ON DELETE CASCADE
 );  
 
--- CREATE TABLE vaccinations (
---     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
---     vaccin_id INTEGER NOT NULL,
---     FOREIGN KEY (vaccin_id) REFERENCES vaccins (id) ON DELETE CASCADE
--- );
 
 CREATE TABLE vaccins (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -234,7 +229,7 @@ CREATE TABLE ascendance (
     mother_id INTEGER,
     -- child_id INTGER,
     FOREIGN KEY (father_id) REFERENCES animals (id) ON DELETE CASCADE,
-    FOREIGN KEY (mother_id) REFERENCES animals (id) ON DELETE CASCADE,
+    FOREIGN KEY (mother_id) REFERENCES animals (id) ON DELETE CASCADE
     -- FOREIGN KEY (child_id) REFERENCES animals (id) ON DELETE CASCADE
 );
 

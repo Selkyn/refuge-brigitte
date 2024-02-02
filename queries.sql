@@ -39,7 +39,7 @@ OR (people.surname = 'Voiron ' AND cities.name = 'Pointe')
 OR (people.surname = 'Scholl' AND cities.name = 'Ushuaia')
 OR (people.surname = 'Adiba' AND cities.name = 'Papeete');
 
---7  Le nom et l’âge des animaux nés en 2017
+--7  Le nom et l’âge des animaux  en 2017
 -- SELECT animals.name, CAST ((julianday('now') - julianday(animals.birth_day)) /365.25 AS INTEGER) AS age
 -- FROM animals
 -- WHERE animals.birth_day >= '2017-01-01' AND animals.birth_day <= '2017-12-31';
@@ -78,7 +78,7 @@ JOIN people AS people_allees ON allees.responsable_id = people_allees.id
 ;
 
 --11 Le nom des soigneurs gardant tous les animaux.
-SELECT people.name
+SELECT DISTINCT people.name
 FROM animals
 JOIN people ON animals.person_id = people.id;
 
@@ -112,9 +112,9 @@ WHERE c.id NOT IN (SELECT cage_id FROM home);
 
 -- 15  Donner pour chaque animal mâle l’ensemble des maladies qu’il a contractées
 SELECT animals.name, sicknesses.name AS maladie, healthBooks_sicknesses.date 
-FROM healthBooks
+FROM healthBooks_sicknesses
 JOIN animals ON healthBooks.animal_id = animals.id
-JOIN healthBooks_sicknesses ON healthBooks_sicknesses.healthBook_id = healthBooks.id
+JOIN healthBooks ON healthBooks_sicknesses.healthBook_id = healthBooks.id
 JOIN sicknesses ON healthBooks_sicknesses.sickness_id = sicknesses.id
 WHERE animals.sex = 'male';
 
@@ -299,3 +299,11 @@ FROM animals;
 -- FROM nom n, animal ani, espece es ,cage ca 
 -- WHERE ani.nom = n.idnom AND es.idespece = ani.espece AND ca.CageID = ani.cage_id;
 
+SELECT Projets.nom_projet
+FROM Projets
+WHERE date_debut > '2023-01-01';
+
+
+SELECT Projet.nom_projet, Projet.date_debut, Projet.date_fin
+FROM Projet
+WHERE date_fin > CAST(julianday ('now'));
